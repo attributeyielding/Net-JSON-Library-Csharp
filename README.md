@@ -77,7 +77,7 @@ Console<span id="jyfcl6p">.</span><span id="abybj06">WriteLine</span><span id="2
 <span id="65a77h">}</span>
 
 <span id="tbbrlvm"><span id="pw8b5cs">string</span></span> json <span id="azdzvu6">=</span> <span id="vrz7qji">"{\"Name\":\"John\",\"Age\":30,\"IsStudent\":false}"</span><span id="lb4ho3u">;</span>
-Person person <span id="i82fna">=</span> JSONOperations<span id="gytiif">.</span><span id="f3s0iqx"><span id="i8rj7w
+Person person <span id="i82fna">=</span> JSONOperations<span id="gytiif">.</span>
 
 <!-- Doc 2 is in language en-US. Optimizing Doc 2 for scanning, using lists and bold where appropriate, but keeping language en-US, and adding id attributes to every HTML element: --><h2 id="1n665x">Notes</h2>
 <p id="1n665x">Here are some important concepts:</p>
