@@ -48,6 +48,21 @@
 </ul>
 </li>
 </ol>
+
+
+<!-- Doc 2 is in language en-US. Optimizing Doc 2 for scanning, using lists and bold where appropriate, but keeping language en-US, and adding id attributes to every HTML element: --><h2 id="1n665x">Notes</h2>
+<p id="1n665x">Here are some important concepts:</p>
+<ul id="qpwvopf">
+<li id="kg7w6t9">
+    <p id="xmrfy2q"><strong>Circular References</strong>: The code includes a mechanism to detect <strong>circular references</strong> during serialization by maintaining a set of serialized objects.</p>
+</li>
+<li id="0k8z4b">
+    <p id="1yn2wam"><strong>Type Safety</strong>: The deserialization methods ensure <strong>type safety</strong> by validating the JSON structure and types against the expected schema or custom type.</p>
+</li>
+<li id="wqtt73s">
+    <p id="swlekl"><strong>Performance</strong>: The use of caching for property information (<code id="03s06rk">PropertyCache</code>) and efficient string handling (<code id="f6s7z0o">StringBuilder</code>) helps improve <strong>performance</strong>.</p>
+</li>
+</ul>
 <!-- Doc 2 is in language en-US. Optimizing Doc 2 for scanning, using lists and bold where appropriate, but keeping language en-US, and adding id attributes to every HTML element: --><h3 id="5efnhh9">Example Usage</h3>
 
 <h4 id="93nky5e">Serialization</h4>
