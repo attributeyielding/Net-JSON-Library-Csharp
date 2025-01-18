@@ -42,8 +42,20 @@ Console.WriteLine("Schema Validation : " +isValid); // Output: True
 
 
 
+var person2 = new Person2 { Name = "John Doe", Age = 30, BirthDate = new DateTime(1990, 1, 1) };
+string json2 = JSONOperations.Serialize(person2);
+Console.WriteLine(json2); // Outputs: {"Name":"John Doe","Age":30,"BirthDate":"1990-01-01T00:00:00.0000000"}
+
+var deserializedPerson2 = JSONOperations.Deserialize<Person2>(json2);
+Console.WriteLine(deserializedPerson2.Name); // Outputs: John Doe
 
 
+public class Person2
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public DateTime BirthDate { get; set; }
+}
 
 
 public class Person

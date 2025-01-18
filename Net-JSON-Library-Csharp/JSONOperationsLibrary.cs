@@ -1,4 +1,7 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -6,14 +9,9 @@ namespace JSONOperationsLibrary
 {
     public static class JSONOperations
     {
-        // Cache for property info to improve reflection performance
         private static readonly Dictionary<Type, PropertyInfo[]> PropertyCache = new Dictionary<Type, PropertyInfo[]>();
+        private static readonly HashSet<object> SerializedObjects = new HashSet<object>();
 
-        /// <summary>
-        /// Serializes an object to a JSON string.
-        /// </summary>
-        /// <param name="obj">The object to serialize.</param>
-        /// <returns>A JSON string representation of the object.</returns>
         public static string Serialize(object? obj)
         {
             if (obj == null)
@@ -21,16 +19,12 @@ namespace JSONOperationsLibrary
                 throw new ArgumentNullException(nameof(obj), "Object cannot be null.");
             }
 
+            SerializedObjects.Clear();
             var jsonBuilder = new StringBuilder();
             SerializeValue(obj, jsonBuilder);
             return jsonBuilder.ToString();
         }
 
-        /// <summary>
-        /// Deserializes a JSON string to an object or array.
-        /// </summary>
-        /// <param name="json">The JSON string to deserialize.</param>
-        /// <returns>A Dictionary<string, object> for JSON objects or a List<object> for JSON arrays.</returns>
         public static object? Deserialize(string json)
         {
             if (string.IsNullOrWhiteSpace(json))
@@ -41,7 +35,6 @@ namespace JSONOperationsLibrary
             int index = 0;
             SkipWhitespace(json, ref index);
 
-            // Determine if the root element is an object or an array
             char firstChar = json[index];
             if (firstChar == '{')
             {
@@ -57,12 +50,6 @@ namespace JSONOperationsLibrary
             }
         }
 
-        /// <summary>
-        /// Deserializes a JSON string to a specific type.
-        /// </summary>
-        /// <typeparam name="T">The type to deserialize into.</typeparam>
-        /// <param name="json">The JSON string to deserialize.</param>
-        /// <returns>An instance of the specified type.</returns>
         public static T Deserialize<T>(string json) where T : new()
         {
             if (string.IsNullOrWhiteSpace(json))
@@ -79,11 +66,6 @@ namespace JSONOperationsLibrary
             return MapDictionaryToType<T>(dict);
         }
 
-        /// <summary>
-        /// Serializes an object to a JSON string and writes it to a stream.
-        /// </summary>
-        /// <param name="obj">The object to serialize.</param>
-        /// <param name="stream">The stream to write to.</param>
         public static void SerializeToStream(object? obj, Stream stream)
         {
             if (obj == null)
@@ -97,11 +79,6 @@ namespace JSONOperationsLibrary
             }
         }
 
-        /// <summary>
-        /// Deserializes a JSON string from a stream.
-        /// </summary>
-        /// <param name="stream">The stream to read from.</param>
-        /// <returns>A Dictionary<string, object> for JSON objects or a List<object> for JSON arrays.</returns>
         public static object? DeserializeFromStream(Stream stream)
         {
             using (var reader = new StreamReader(stream, Encoding.UTF8, true, 1024, true))
@@ -110,12 +87,6 @@ namespace JSONOperationsLibrary
             }
         }
 
-        /// <summary>
-        /// Validates a JSON string against a schema.
-        /// </summary>
-        /// <param name="json">The JSON string to validate.</param>
-        /// <param name="schema">The schema to validate against.</param>
-        /// <returns>True if the JSON string is valid; otherwise, false.</returns>
         public static bool ValidateSchema(string json, Dictionary<string, Type> schema)
         {
             var dict = Deserialize(json) as Dictionary<string, object>;
@@ -140,7 +111,6 @@ namespace JSONOperationsLibrary
             return true;
         }
 
-        // Serialization Methods
         private static void SerializeValue(object? value, StringBuilder jsonBuilder)
         {
             if (value == null)
@@ -159,6 +129,14 @@ namespace JSONOperationsLibrary
             {
                 jsonBuilder.Append(value);
             }
+            else if (value is DateTime dateTime)
+            {
+                jsonBuilder.Append($"\"{dateTime:o}\"");
+            }
+            else if (value is Enum enumValue)
+            {
+                jsonBuilder.Append($"\"{enumValue}\"");
+            }
             else if (value is IDictionary<string, object> dict)
             {
                 SerializeDictionary(dict, jsonBuilder);
@@ -169,6 +147,11 @@ namespace JSONOperationsLibrary
             }
             else if (value.GetType().IsClass)
             {
+                if (SerializedObjects.Contains(value))
+                {
+                    throw new InvalidOperationException("Circular reference detected.");
+                }
+                SerializedObjects.Add(value);
                 SerializeCustomType(value, jsonBuilder);
             }
             else
@@ -273,7 +256,6 @@ namespace JSONOperationsLibrary
             return PropertyCache[type];
         }
 
-        // Deserialization Methods
         private static T MapDictionaryToType<T>(Dictionary<string, object> dict) where T : new()
         {
             var obj = new T();
