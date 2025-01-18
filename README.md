@@ -78,3 +78,7 @@ Console<span id="jyfcl6p">.</span><span id="abybj06">WriteLine</span><span id="2
 
 <span id="tbbrlvm"><span id="pw8b5cs">string</span></span> json <span id="azdzvu6">=</span> <span id="vrz7qji">"{\"Name\":\"John\",\"Age\":30,\"IsStudent\":false}"</span><span id="lb4ho3u">;</span>
 Person person <span id="i82fna">=</span> JSONOperations<span id="gytiif">.</span><span id="f3s0iqx"><span id="i8rj7w
+
+
+![image](https://github.com/user-attachments/assets/b6d34d71-6ccc-4be1-8eef-8537938fd931)
+
