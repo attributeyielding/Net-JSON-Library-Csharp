@@ -14,7 +14,7 @@ Net-JSON-Library-Csharp is a lightweight and efficient library designed to simpl
 
 Key Features
 Efficient JSON Parsing: Quickly parse JSON strings into C# objects with minimal overhead.
-Seamless Serialization & Deserialization: Convert complex C# objects to JSON and vice versa with ease.
+Seamless Serialization and Deserialization: Convert complex C# objects to JSON and vice versa with ease.
 Customizable Options: Fine-tune settings such as formatting, null handling, and property naming conventions.
 Error Handling: Built-in mechanisms to gracefully handle malformed JSON or unexpected data structures.
 Lightweight Design: Minimal dependencies ensure fast performance and easy integration into your projects.
