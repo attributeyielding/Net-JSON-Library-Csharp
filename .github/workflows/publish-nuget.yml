@@ -1,0 +1,31 @@
+name: Publish NuGet Package
+
+on:
+  push:
+    tags:
+      - 'v*' # Trigger on tags starting with "v" (e.g., v1.0.0)
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x' # Replace with your .NET version
+
+    - name: Restore Dependencies
+      run: dotnet restore
+
+    - name: Build Project
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Pack Project
+      run: dotnet pack --configuration Release --no-build --output ./nupkg
+
+    - name: Publish to NuGet
+      run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
