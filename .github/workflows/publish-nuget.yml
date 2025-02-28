@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+- name: Fix line endings
+  run: |
+    sed -i 's/\r//g' Net-JSON-Library-Csharp/Net-JSON-Library-Csharp.csproj
+
     - name: Checkout Code
       uses: actions/checkout@v3
 
